@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import org.sid.secservice.security.JWTUtil;
 import org.sid.secservice.security.entities.AppRole;
 import org.sid.secservice.security.entities.AppUser;
 import org.sid.secservice.security.service.AccountService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -54,19 +56,19 @@ public class AccountRestController {
     }
 @GetMapping(path = "/refreshToken")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String authorizationToken=request.getHeader("Authorization");
+        String authorizationToken=request.getHeader(JWTUtil.AUTH_HEADER);
 
-        if(authorizationToken!=null&&authorizationToken.startsWith("Bearer ")){
+        if(authorizationToken!=null&&authorizationToken.startsWith(JWTUtil.PREFIX)){
             try {
-                String refreshToken=authorizationToken.substring(7);
-                Algorithm algorithm =Algorithm.HMAC256("mySecret1234");
+                String refreshToken=authorizationToken.substring(JWTUtil.PREFIX.length());
+                Algorithm algorithm =Algorithm.HMAC256(JWTUtil.secret);
                 JWTVerifier jwtVerifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = jwtVerifier.verify(refreshToken);
                 String username=decodedJWT.getSubject();
                 AppUser appUser=accountService.loadUserByUsername(username);
                 String jwtAccessToken= JWT.create()
                         .withSubject(appUser.getUsername())
-                        .withExpiresAt(new Date(System.currentTimeMillis()+1*60*1000))
+                        .withExpiresAt(new Date(System.currentTimeMillis()+JWTUtil.EXPIRE_ACCESS_TOKEN))
                         .withIssuer(request.getRequestURI().toString())
                         .withClaim("roles",appUser.getAppRoles().stream().map(r->r.getRoleName()).collect(Collectors.toList()))
                         .sign(algorithm);
@@ -85,6 +87,11 @@ public class AccountRestController {
         else {
             throw  new RuntimeException("refresh token required!!");
         }
+    }
+    @GetMapping(path = "/profile")
+
+    public AppUser profile(Principal principal){
+        return accountService.loadUserByUsername(principal.getName());
     }
 }
 @Data
