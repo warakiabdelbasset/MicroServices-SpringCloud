@@ -19,17 +19,17 @@ As well as a part whose goal is to secure the Front and Backend parts of an appl
 
 1. Create the Customer-service micro service
 
-• Create the Customer entity
-• Create the CustomerRepository interface based on Spring Data
-• Deploy the Restful API of the micro-service using Spring Data Rest
-• Test the Micro service
+- Create the Customer entity
+- Create the CustomerRepository interface based on Spring Data
+- Deploy the Restful API of the micro-service using Spring Data Rest
+- Test the Micro service
 
 2. Create the Inventory-service micro service
 
-• Create the Product entity
-• Create the ProductRepository interface based on Spring Data
-• Deploy the Restful API of the micro-service using Spring Data Rest
-• Test the Micro service
+- Create the Product entity
+- Create the ProductRepository interface based on Spring Data
+- Deploy the Restful API of the micro-service using Spring Data Rest
+- Test the Micro service
 
 3. Create the Gateway service using Spring Cloud Gateway
 
@@ -39,11 +39,8 @@ As well as a part whose goal is to secure the Front and Backend parts of an appl
 
 7. Create a Statless authentication service based on Spring Security and Json Web Token. This service should make it possible to:
 
-• Manage users and roles of the application.
-
-• Authenticate a user by delivering an access Token and a JWT type refresh Token.
-
-• Manage access authorizations.
-
-• Renew access Token using the refresh Token
+- Manage users and roles of the application.
+- Authenticate a user by delivering an access Token and a JWT type refresh Token.
+- Manage access authorizations.
+- Renew access Token using the refresh Token
 
