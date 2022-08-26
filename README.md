@@ -39,7 +39,7 @@ As well as a part whose goal is to secure the Front and Backend parts of an appl
 
 7. Create a Statless authentication service based on Spring Security and Json Web Token. This service should make it possible to:
 
-• Manage users and roles of the application
+• Manage users and roles of the application.
 • Authenticate a user by delivering an access Token and a JWT type refresh Token
 • Manage access authorizations
 • Renew access Token using the refresh Token
